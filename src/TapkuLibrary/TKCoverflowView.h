@@ -87,6 +87,7 @@
 - (void) coverflowView:(TKCoverflowView*)coverflowView coverAtIndexWasBroughtToFront:(int)index;
 @optional
 - (void) coverflowView:(TKCoverflowView*)coverflowView coverAtIndexWasDoubleTapped:(int)index;
+- (void) coverflowView:(TKCoverflowView*)coverflowView coverAtIndexWasTapped:(int)index;
 @end
 
 @protocol TKCoverflowViewDataSource <NSObject>

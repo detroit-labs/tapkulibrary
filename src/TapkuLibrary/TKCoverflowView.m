@@ -389,10 +389,17 @@
 	if(touch.view == currentTouch){
 		if(touch.tapCount > 1 && currentIndex == [coverViews indexOfObject:currentTouch]){
 
-			if([coverflowDelegate respondsToSelector:@selector(coverflowView:coverAtIndexWasDoubleTapped:)])
+        if([coverflowDelegate respondsToSelector:@selector(coverflowView:coverAtIndexWasDoubleTapped:)])
 				[coverflowDelegate coverflowView:self coverAtIndexWasDoubleTapped:currentIndex];
+            
+        }
+        else if(touch.tapCount == 1 && currentIndex == [coverViews indexOfObject:currentTouch]){
+                
+                if([coverflowDelegate respondsToSelector:@selector(coverflowView:coverAtIndexWasTapped:)])
+                    [coverflowDelegate coverflowView:self coverAtIndexWasTapped:currentIndex];
 			
-		}else{
+		}
+            else{
 			int index = [coverViews indexOfObject:currentTouch];
 			[self setContentOffset:CGPointMake(coverSpacing*index, 0) animated:YES];
 		}
