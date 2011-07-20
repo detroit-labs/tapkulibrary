@@ -1,15 +1,7 @@
-# xcode noise
 build
-TapkuLibrary/build/**
-TapkuLibraryDemo/build/**
-*.pbxuser
-*.perspectivev3
 *.mode1v3
-
-# old skool
-.svn
-.cvs
-
-# osx noise
+*.pbxuser
 .DS_Store
-#profile
+*.swp
+xcuserdata
+project.xcworkspace
