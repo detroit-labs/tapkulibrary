@@ -36,9 +36,11 @@
 
 
 - (id) initWithProgressTitle:(NSString*)txt{
-	if(![super initWithFrame:CGRectZero]) return nil;
-		
-	self.label.text = txt;
+	self = [super initWithFrame:CGRectZero];
+	
+	if (self) {
+		self.label.text = txt;
+	}
 	
 	return self;
 }

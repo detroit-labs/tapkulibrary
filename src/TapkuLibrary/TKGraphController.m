@@ -36,8 +36,10 @@
 @implementation TKGraphController
 @synthesize graph;
 
-- (id) init{
-	if(![super init]) return nil;
+- (id) init
+{
+	self = [super init];
+	
 	return self;
 }
 

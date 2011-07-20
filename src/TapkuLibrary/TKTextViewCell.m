@@ -35,12 +35,15 @@
 @synthesize textView=_textView;
 
 
-- (id) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-	if(![super initWithStyle:style reuseIdentifier:reuseIdentifier]) return nil;
+- (id) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
 	
-	_textView = [[UITextView alloc] initWithFrame:CGRectZero];
-	_textView.font = [UIFont boldSystemFontOfSize:14.0];
-	[self addSubview:_textView];
+	if (self) {
+		_textView = [[UITextView alloc] initWithFrame:CGRectZero];
+		_textView.font = [UIFont boldSystemFontOfSize:14.0];
+		[self addSubview:_textView];
+	}
 	
 	return self;
 }

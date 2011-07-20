@@ -34,13 +34,15 @@
 @synthesize slider=_slider;
 
 
-- (id) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-	if(![super initWithStyle:style reuseIdentifier:reuseIdentifier]) return nil;
-
-	_slider = [[UISwitch alloc] initWithFrame:CGRectMake(0,0,94,27)];
-	[self addSubview:_slider];
-		
-
+- (id) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+	
+	if (self) {
+		_slider = [[UISwitch alloc] initWithFrame:CGRectMake(0,0,94,27)];
+		[self addSubview:_slider];
+	}
+	
     return self;
 }
 - (id) initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier {

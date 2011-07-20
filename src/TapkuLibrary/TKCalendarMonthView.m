@@ -193,7 +193,7 @@
 	info.day = daysInMonth;
 	NSDate *lastInMonth = [NSDate dateFromDateInformation:info timeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
 	TKDateInformation lastDateInfo = [lastInMonth dateInformationWithTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-
+	
 	
 	
 	if(lastDateInfo.weekday < 7 && sunday){
@@ -206,17 +206,17 @@
 			lastDateInfo.year++;
 		}
 		lastDate = [NSDate dateFromDateInformation:lastDateInfo timeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-	
+		
 	}else if(!sunday && lastDateInfo.weekday != 1){
 		
 		
 		lastDateInfo.day = 8 - lastDateInfo.weekday;
 		lastDateInfo.month++;
 		if(lastDateInfo.month>12){ lastDateInfo.month = 1; lastDateInfo.year++; }
-
+		
 		
 		lastDate = [NSDate dateFromDateInformation:lastDateInfo timeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-
+		
 	}else{
 		lastDate = lastInMonth;
 	}
@@ -226,59 +226,62 @@
 	return [NSArray arrayWithObjects:firstDate,lastDate,nil];
 }
 
-- (id) initWithMonth:(NSDate*)date marks:(NSArray*)markArray startDayOnSunday:(BOOL)sunday{
-	if(![super initWithFrame:CGRectZero]) return nil;
-
-	firstOfPrev = -1;
-	marks = [markArray retain];
-	monthDate = [date retain];
-	startOnSunday = sunday;
+- (id) initWithMonth:(NSDate*)date marks:(NSArray*)markArray startDayOnSunday:(BOOL)sunday
+{
+	self = [super initWithFrame:CGRectZero];
 	
-
-	
-	TKDateInformation dateInfo = [monthDate dateInformationWithTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-	firstWeekday = dateInfo.weekday;
-	
-	
-	NSDate *prev = [monthDate previousMonth];
-	//NSDate *next = [monthDate nextMonth];
-	
-	daysInMonth = [[monthDate nextMonth] daysBetweenDate:monthDate];
-	
-	int row = (daysInMonth + dateInfo.weekday - 1);
-	if(dateInfo.weekday==1&&!sunday) row = daysInMonth + 6;
-	if(!sunday) row--;
-	
-
-	row = (row / 7) + ((row % 7 == 0) ? 0:1);
-	float h = 44 * row;
-	
-	TKDateInformation todayInfo = [[NSDate date] dateInformation];
-	today = dateInfo.month == todayInfo.month && dateInfo.year == todayInfo.year ? todayInfo.day : -5;
-	
-	int preDayCnt = [prev daysBetweenDate:monthDate];		
-	if(firstWeekday>1 && sunday){
-		firstOfPrev = preDayCnt - firstWeekday+2;
-		lastOfPrev = preDayCnt;
-	}else if(!sunday && firstWeekday != 2){
+	if (self) {
+		firstOfPrev = -1;
+		marks = [markArray retain];
+		monthDate = [date retain];
+		startOnSunday = sunday;
 		
-		if(firstWeekday ==1){
-			firstOfPrev = preDayCnt - 5;
-		}else{
-			firstOfPrev = preDayCnt - firstWeekday+3;
+		
+		
+		TKDateInformation dateInfo = [monthDate dateInformationWithTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+		firstWeekday = dateInfo.weekday;
+		
+		
+		NSDate *prev = [monthDate previousMonth];
+		//NSDate *next = [monthDate nextMonth];
+		
+		daysInMonth = [[monthDate nextMonth] daysBetweenDate:monthDate];
+		
+		int row = (daysInMonth + dateInfo.weekday - 1);
+		if(dateInfo.weekday==1&&!sunday) row = daysInMonth + 6;
+		if(!sunday) row--;
+		
+		
+		row = (row / 7) + ((row % 7 == 0) ? 0:1);
+		float h = 44 * row;
+		
+		TKDateInformation todayInfo = [[NSDate date] dateInformation];
+		today = dateInfo.month == todayInfo.month && dateInfo.year == todayInfo.year ? todayInfo.day : -5;
+		
+		int preDayCnt = [prev daysBetweenDate:monthDate];		
+		if(firstWeekday>1 && sunday){
+			firstOfPrev = preDayCnt - firstWeekday+2;
+			lastOfPrev = preDayCnt;
+		}else if(!sunday && firstWeekday != 2){
+			
+			if(firstWeekday ==1){
+				firstOfPrev = preDayCnt - 5;
+			}else{
+				firstOfPrev = preDayCnt - firstWeekday+3;
+			}
+			lastOfPrev = preDayCnt;
+			
 		}
-		lastOfPrev = preDayCnt;
-
+		
+		
+		
+		
+		self.frame = CGRectMake(0, 1, 320, h+1);
+		
+		[self.selectedImageView addSubview:self.currentDay];
+		[self.selectedImageView addSubview:self.dot];
+		self.multipleTouchEnabled = NO;
 	}
-	
-	
-
-	
-	self.frame = CGRectMake(0, 1, 320, h+1);
-	
-	[self.selectedImageView addSubview:self.currentDay];
-	[self.selectedImageView addSubview:self.dot];
-	self.multipleTouchEnabled = NO;
 	
 	return self;
 }
@@ -458,7 +461,7 @@
 	info.day = selectedDay;
 	NSDate *d = [NSDate dateFromDateInformation:info timeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
 	
-		
+	
 	
 	return d;
 	
@@ -488,7 +491,7 @@
 		day = row * 7 + column  - firstWeekday+2;
 		if(!startOnSunday) day++;
 		if(!startOnSunday && fir==6) day -= 7;
-
+		
 	}
 	if(portion > 0 && day > daysInMonth){
 		portion = 2;
@@ -523,7 +526,7 @@
 		[self.dot removeFromSuperview];
 	}
 	
-
+	
 	
 	
 	CGRect r = self.selectedImageView.frame;
@@ -625,7 +628,7 @@
 - (id) initWithSundayAsFirst:(BOOL)s{
 	if (!(self = [super initWithFrame:CGRectZero])) return nil;
 	self.backgroundColor = [UIColor grayColor];
-
+	
 	sunday = s;
 	
 	
@@ -635,7 +638,7 @@
 	
 	[currentTile setTarget:self action:@selector(tile:)];
 	CGRect r = CGRectMake(0, 0, self.tileBox.bounds.size.width, self.tileBox.bounds.size.height + self.tileBox.frame.origin.y);
-
+	
 	
 	self.frame = r;
 	
@@ -694,8 +697,8 @@
 	NSString *sat = [dateFormat stringFromDate:[NSDate dateFromDateInformation:sund timeZone:tz]];
 	
 	[dateFormat release];
-
-
+	
+	
 	
 	NSArray *ar;
 	if(sunday) ar = [NSArray arrayWithObjects:sun,mon,tue,wed,thu,fri,sat,nil];
@@ -713,7 +716,7 @@
 		label.font = [UIFont systemFontOfSize:11];
 		label.backgroundColor = [UIColor clearColor];
 		label.textColor = [UIColor colorWithRed:59/255. green:73/255. blue:88/255. alpha:1];
-
+		
 		i++;
 		[label release];
 	}
@@ -776,7 +779,7 @@
 	[UIView beginAnimations:nil context:nil];
 	[UIView setAnimationDuration:0.1];
 	newTile.alpha = 1;
-
+	
 	[UIView commitAnimations];
 	
 	
@@ -824,7 +827,7 @@
 	monthYear.text = [NSString stringWithFormat:@"%@ %@",[localNextMonth monthString],[localNextMonth yearString]];
 	
 	
-
+	
 }
 - (void) changeMonth:(UIButton *)sender{
 	
@@ -836,13 +839,13 @@
 	if ([delegate respondsToSelector:@selector(calendarMonthView:monthWillChange:animated:)] ) 
 		[delegate calendarMonthView:self monthWillChange:newDate animated:YES];
 	
-
+	
 	
 	
 	[self changeMonthAnimation:sender];
 	if([delegate respondsToSelector:@selector(calendarMonthView:monthDidChange:animated:)])
 		[delegate calendarMonthView:self monthDidChange:currentTile.monthDate animated:YES];
-
+	
 }
 - (void) animationEnded{
 	self.userInteractionEnabled = YES;
@@ -886,7 +889,7 @@
 		[self.tileBox addSubview:currentTile];
 		self.tileBox.frame = CGRectMake(0, 44, newTile.frame.size.width, newTile.frame.size.height);
 		self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.bounds.size.width, self.tileBox.frame.size.height+self.tileBox.frame.origin.y);
-
+		
 		self.shadow.frame = CGRectMake(0, self.frame.size.height-self.shadow.frame.size.height+21, self.shadow.frame.size.width, self.shadow.frame.size.height);
 		self.monthYear.text = [NSString stringWithFormat:@"%@ %@",[date monthString],[date yearString]];
 		[currentTile selectDay:info.day];
@@ -917,7 +920,7 @@
 		
 		if([delegate respondsToSelector:@selector(calendarMonthView:didSelectDate:)])
 			[delegate calendarMonthView:self didSelectDate:[self dateSelected]];
-	
+		
 	}else{
 		
 		int direction = [[ar lastObject] intValue];
@@ -935,8 +938,8 @@
 		[self changeMonthAnimation:b];
 		
 		int day = [[ar objectAtIndex:0] intValue];
-
-	
+		
+		
 		// thanks rafael
 		TKDateInformation info = [[currentTile monthDate] dateInformationWithTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
 		info.day = day;
@@ -950,7 +953,7 @@
 		
 		if([delegate respondsToSelector:@selector(calendarMonthView:monthDidChange:animated:)])
 			[delegate calendarMonthView:self monthDidChange:dateForMonth animated:YES];
-
+		
 		
 	}
 	
@@ -982,7 +985,7 @@
 		
 		
 		
-
+		
 		[leftArrow setImage:[UIImage imageNamedTK:@"TapkuLibrary.bundle/Images/calendar/Month Calendar Left Arrow"] forState:0];
 		
 		leftArrow.frame = CGRectMake(0, 0, 48, 38);
@@ -996,8 +999,8 @@
 		[rightArrow addTarget:self action:@selector(changeMonth:) forControlEvents:UIControlEventTouchUpInside];
 		rightArrow.frame = CGRectMake(320-45, 0, 48, 38);
 		
-
-
+		
+		
 		[rightArrow setImage:[UIImage imageNamedTK:@"TapkuLibrary.bundle/Images/calendar/Month Calendar Right Arrow"] forState:0];
 		
 	}

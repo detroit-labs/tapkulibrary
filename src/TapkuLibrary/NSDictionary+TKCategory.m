@@ -69,9 +69,13 @@
 	{
         id keyObject = [self objectForKey: key];
 		// conform with rfc 1738 3.3, also escape URL-like characters that might be in the parameters
-		NSString *escapedKey
-		= (NSString *) CFURLCreateStringByAddingPercentEscapes(
-															   NULL, (CFStringRef) key, NULL, (CFStringRef) @";:@&=/+", cfStrEnc);
+		CFStringRef escapedStringRef =  CFURLCreateStringByAddingPercentEscapes(NULL,
+																				(CFStringRef)key,
+																				NULL,
+																				(CFStringRef)@";:@&=/+",
+																				cfStrEnc);
+		NSString *escapedKey = (NSString *)escapedStringRef;
+		
         if ([keyObject respondsToSelector: @selector(objectEnumerator)])
         {
             NSEnumerator        *multipleValueEnum = [keyObject objectEnumerator];
@@ -79,19 +83,23 @@
 			
             while ((aValue = [multipleValueEnum nextObject]))
             {
-                NSString *escapedObject
-                = (NSString *) CFURLCreateStringByAddingPercentEscapes(
+				CFStringRef escapedObjectStringRef = CFURLCreateStringByAddingPercentEscapes(
                                                                        NULL, (CFStringRef) [aValue description], NULL, (CFStringRef) @";:@&=/+", cfStrEnc);
+				NSString *escapedObject = (NSString *)escapedObjectStringRef;
                 [s appendFormat:@"%@=%@&", escapedKey, escapedObject];
+				CFRelease(escapedObjectStringRef);
             }
         }
         else
         {
-            NSString *escapedObject
-            = (NSString *) CFURLCreateStringByAddingPercentEscapes(
-                                                                   NULL, (CFStringRef) [keyObject description], NULL, (CFStringRef) @";:@&=/+", cfStrEnc);
-            [s appendFormat:@"%@=%@&", escapedKey, escapedObject];
+			CFStringRef escapedObjectStringRef = CFURLCreateStringByAddingPercentEscapes(
+																						 NULL, (CFStringRef) [keyObject description], NULL, (CFStringRef) @";:@&=/+", cfStrEnc);
+			NSString *escapedObject = (NSString *)escapedObjectStringRef;
+			[s appendFormat:@"%@=%@&", escapedKey, escapedObject];
+			CFRelease(escapedObjectStringRef);
         }
+		
+		CFRelease(escapedStringRef);
 	}
 	// Delete final & from the string
 	if (![s isEqualToString:@""]){

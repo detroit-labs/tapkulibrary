@@ -280,9 +280,13 @@
 @synthesize coverflowDelegate, dataSource, coverSize, numberOfCovers, coverSpacing, coverAngle;
 
 - (id) initWithFrame:(CGRect)frame {
-	if(![super initWithFrame:frame]) return nil;
-	[self load];
-	currentSize = frame.size;
+	self = [super initWithFrame:frame];
+	
+	if (self) {
+		[self load];
+		currentSize = frame.size;
+	}
+	
     return self;
 }
 - (void) dealloc {	
