@@ -87,6 +87,19 @@
 	reflected.frame = CGRectMake(0, y + h, w, h);
 	reflected.image = image;
 }
+
+- (CGFloat)cornerRadius
+{
+	return imageView.layer.cornerRadius;
+}
+
+- (void)setCornerRadius:(CGFloat)cornerRadius
+{
+	imageView.layer.cornerRadius = cornerRadius;
+	reflected.layer.cornerRadius = cornerRadius;
+	gradientLayer.cornerRadius = cornerRadius;
+}
+
 - (UIImage*) image{
 	return imageView.image;
 }
@@ -94,9 +107,6 @@
 	baseline = f;
 	[self setNeedsDisplay];
 }
-
-
-
 
 - (void) dealloc {
 	[reflected release];

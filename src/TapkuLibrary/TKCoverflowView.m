@@ -278,6 +278,7 @@
 #pragma mark -
 @implementation TKCoverflowView
 @synthesize coverflowDelegate, dataSource, coverSize, numberOfCovers, coverSpacing, coverAngle;
+@synthesize coverCornerRadius;
 
 - (id) initWithFrame:(CGRect)frame {
 	self = [super initWithFrame:frame];
@@ -478,6 +479,19 @@
 }
 - (NSInteger) currentIndex{
 	return currentIndex;
+}
+
+- (void)setCoverCornerRadius:(CGFloat)radius
+{
+	coverCornerRadius = radius;
+	
+	for (TKCoverflowCoverView *coverView in coverViews) {
+		if ([coverView isKindOfClass:[TKCoverflowCoverView class]]) {
+			if ([coverView cornerRadius] != radius) {
+				[coverView setCornerRadius:radius];
+			}
+		}
+	}
 }
 
 @end

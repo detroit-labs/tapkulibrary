@@ -70,6 +70,7 @@
 @property (nonatomic, assign) int numberOfCovers;
 @property (nonatomic, assign) float coverSpacing;
 @property (nonatomic, assign) float coverAngle;
+@property CGFloat coverCornerRadius;
 
 - (TKCoverflowCoverView*) dequeueReusableCoverView; // like a tableview
 
